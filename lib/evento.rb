@@ -1,6 +1,10 @@
-require "evento/version"
+# frozen_string_literal: true
+
+require 'evento/version'
 
 module Evento
   class Error < StandardError; end
-  # Your code goes here...
 end
+
+require 'evento/extractor'
+
