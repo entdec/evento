@@ -8,6 +8,14 @@ module Evento
       @klass = klass
     end
 
+    def extract_audit_trail_association(options = {})
+      name       = (options[:name] || :resource_state_transitions).to_sym
+      reflection = klass.reflect_on_all_associations.find { |a| a.name == name } if klass.respond_to?(:reflect_on_all_associations)
+
+      return reflection if options[:reflection]
+      return reflection&.klass
+    end
+
     def extract_events(options = {})
       events = []
       events += events_from_state_machine.map(&:to_s) if options[:state_machine]

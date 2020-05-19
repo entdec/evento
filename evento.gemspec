@@ -20,10 +20,14 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_development_dependency 'aasm', '~> 5.0'
+  spec.add_development_dependency 'activerecord', '~> 5.2'
   spec.add_development_dependency 'i18n', '~> 1.8'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'pry', '~> 0.13'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rubocop', '~> 0.83'
+  spec.add_development_dependency 'sqlite3', '~> 1.4'
   spec.add_development_dependency 'state_machines', '~> 0.5'
+  spec.add_development_dependency 'state_machines-audit_trail', '~> 2'
+  spec.add_development_dependency 'state_machines-activerecord', '~> 0.6'
 end
