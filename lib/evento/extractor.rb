@@ -12,7 +12,7 @@ module Evento
       events = []
       events += events_from_state_machine.map(&:to_s) if options[:state_machine]
       events += events_from_devise if options[:devise]
-      events
+      events.sort
     end
 
     private

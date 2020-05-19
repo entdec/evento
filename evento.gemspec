@@ -19,5 +19,10 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
 
+  spec.add_development_dependency 'aasm', '~> 5.0'
+  spec.add_development_dependency 'i18n', '~> 1.8'
+  spec.add_development_dependency 'minitest', '~> 5.0'
+  spec.add_development_dependency 'pry', '~> 0.13'
+  spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rubocop', '~> 0.83'
 end
