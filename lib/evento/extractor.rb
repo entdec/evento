@@ -8,7 +8,7 @@ module Evento
       @klass = klass
     end
 
-    def extract(options = {})
+    def extract_events(options = {})
       events = []
       events += events_from_state_machine.map(&:to_s) if options[:state_machine]
       events += events_from_devise if options[:devise]
