@@ -4,16 +4,15 @@ module Evento
   class Orchestrator
     attr_reader :klass
 
-    def initialize(klass)
-      @klass = klass
+    def initialize(klass, options = {})
+      @klass     = klass
+      @options   = options
+      @extractor = nil
     end
 
-    def override_devise_notification(&block)
-      klass.define_method(:send_devise_notification, block)
-    end
-
+    # Seeks the audit_trail association on
     def after_audit_trail_commit(name, &block)
-      association = extractor.extract_audit_trail_association
+      association = extractor.extract_audit_trail_association(extract_audit_trail_options)
       return unless association
 
       tracker = "#{association.name.underscore}_after_commit_#{name.to_s.underscore}".upcase
@@ -29,6 +28,16 @@ module Evento
                .each do |event_name|
         target_klass.send(:define_method, event_name, &block)
       end
+    end
+
+    def override_devise_notification(&block)
+      klass.define_method(:send_devise_notification, block)
+    end
+
+    private
+
+    def extract_audit_trail_options
+      { name: @options[:audit_trail_name] }
     end
 
     def extractor

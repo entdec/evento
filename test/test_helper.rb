@@ -14,16 +14,28 @@ ActiveRecord::Schema.define do
   create_table 'animals' do |t|
     t.string 'breed'
     t.string 'name'
+    t.string 'state'
   end
 
   create_table 'bicycles' do |t|
     t.string 'model'
     t.string 'colour'
+    t.string 'state'
+    t.integer 'cycles', default: 0
   end
 
   create_table 'cars' do |t|
     t.string 'model'
     t.string 'colour'
+    t.string 'state'
+    t.integer 'started', default: 0
+    t.integer 'driven', default: 0
+    t.integer 'stopped', default: 0
+  end
+
+  create_table 'users' do |t|
+    t.string 'email'
+    t.string 'state'
   end
 
   create_table 'movements', force: :cascade do |t|
@@ -56,6 +68,7 @@ require_relative 'dummy/models/resource_state_transition'
 require_relative 'dummy/models/animal'
 require_relative 'dummy/models/bicycle'
 require_relative 'dummy/models/car'
+require_relative 'dummy/models/user'
 require_relative 'dummy/lib/test_aasm'
 require_relative 'dummy/lib/test_state_machines'
 
