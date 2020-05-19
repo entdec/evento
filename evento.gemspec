@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry', '~> 0.13'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rubocop', '~> 0.83'
+  spec.add_development_dependency 'state_machines', '~> 0.5'
 end

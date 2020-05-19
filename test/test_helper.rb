@@ -4,6 +4,8 @@ $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
 require 'evento'
 require 'i18n'
+require_relative 'test_aasm'
+require_relative 'test_state_machines'
 
 I18n.backend.store_translations(:en, { devise: { mailer: {
                                   confirmation_instructions: { subject: 'Confirmation instructions' },
