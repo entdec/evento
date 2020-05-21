@@ -15,7 +15,7 @@ module Evento
       association = extractor.extract_audit_trail_association(extract_audit_trail_options)
       return unless association
 
-      tracker = "#{association.name.underscore}_after_commit_#{name.to_s.underscore}".upcase
+      tracker = "#{association.name.underscore.gsub('/', '__')}_after_commit_#{name.to_s.underscore.gsub('/', '__')}".upcase
       return if self.class.const_defined?(tracker, false)
 
       association.after_commit(&block)
