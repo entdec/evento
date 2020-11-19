@@ -77,4 +77,35 @@ class OrchestratorTest < Minitest::Test
     bike.brake!
     assert_equal 2, bike.cycles
   end
+
+  def test_after_transaction_log_commit
+    orchestrator = Evento::Orchestrator.new(Scooter)
+    orchestrator.after_transaction_log_commit(:transitions) do |transaction_log_entry|
+      scooter = transaction_log_entry.transaction_loggable
+      event   = transaction_log_entry.event
+
+      if event.present?
+        scooter.started += 1 if event == 'start'
+        scooter.driven  += 1 if event == 'drive'
+        scooter.stopped += 1 if event == 'stop'
+        scooter.save!
+      end
+    end
+
+    scooter = Scooter.create!(model: 'Puch', colour: 'Blue')
+    assert_equal({ started: 0, driven: 0, stopped: 0 }, scooter.stats)
+
+    scooter.start!
+    assert_equal({ started: 1, driven: 0, stopped: 0 }, scooter.stats)
+
+    scooter.drive!
+    assert_equal({ started: 1, driven: 1, stopped: 0 }, scooter.stats)
+
+    scooter.stop!
+    assert_equal({ started: 1, driven: 1, stopped: 1 }, scooter.stats)
+
+    scooter.start!
+    assert_equal({ started: 2, driven: 1, stopped: 1 }, scooter.stats)
+  end
+
 end

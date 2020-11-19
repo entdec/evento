@@ -8,9 +8,15 @@ module Evento
       @klass = klass
     end
 
+    def extract_transaction_log_association
+      reflection = extract_association_reflection(klass, :transaction_log_entries)
+
+      return reflection&.klass
+    end
+
     def extract_audit_trail_association(options = {})
       name       = (options[:name] || :resource_state_transitions).to_sym
-      reflection = klass.reflect_on_all_associations.find { |a| a.name == name } if klass.respond_to?(:reflect_on_all_associations)
+      reflection = extract_association_reflection(klass, name)
 
       return reflection if options[:reflection]
       return reflection&.klass
@@ -24,6 +30,10 @@ module Evento
     end
 
     private
+
+    def extract_association_reflection(klass, name)
+      klass.reflect_on_all_associations.find { |a| a.name == name } if klass.respond_to?(:reflect_on_all_associations)
+    end
 
     def events_from_state_machine
       if klass.respond_to?(:aasm)

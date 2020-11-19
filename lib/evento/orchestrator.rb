@@ -10,16 +10,14 @@ module Evento
       @extractor = nil
     end
 
-    # Seeks the audit_trail association on
+    def after_transaction_log_commit(name, &block)
+      association = extractor.extract_transaction_log_association
+      after_association_commit(association, name, &block)
+    end
+
     def after_audit_trail_commit(name, &block)
       association = extractor.extract_audit_trail_association(extract_audit_trail_options)
-      return unless association
-
-      tracker = "#{association.name.underscore.gsub('/', '__')}_after_commit_#{name.to_s.underscore.gsub('/', '__')}".upcase
-      return if self.class.const_defined?(tracker, false)
-
-      association.after_commit(&block)
-      self.class.const_set(tracker, true)
+      after_association_commit(association, name, &block)
     end
 
     def define_event_methods_on(target_klass, options = {}, &block)
@@ -35,6 +33,16 @@ module Evento
     end
 
     private
+
+    def after_association_commit(association, name, &block)
+      return unless association
+
+      tracker = "#{association.name.underscore.gsub('/', '__')}_after_commit_#{name.to_s.underscore.gsub('/', '__')}".upcase
+      return if self.class.const_defined?(tracker, false)
+
+      association.after_commit(&block)
+      self.class.const_set(tracker, true)
+    end
 
     def extract_audit_trail_options
       { name: @options[:audit_trail_name] }

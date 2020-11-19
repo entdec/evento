@@ -33,6 +33,15 @@ ActiveRecord::Schema.define do
     t.integer 'stopped', default: 0
   end
 
+  create_table 'scooters' do |t|
+    t.string 'model'
+    t.string 'colour'
+    t.string 'state'
+    t.integer 'started', default: 0
+    t.integer 'driven', default: 0
+    t.integer 'stopped', default: 0
+  end
+
   create_table 'users' do |t|
     t.string 'email'
     t.string 'state'
@@ -59,15 +68,25 @@ ActiveRecord::Schema.define do
     t.json 'context'
     t.datetime 'created_at'
   end
+
+  create_table 'transaction_log_entries', force: :cascade do |t|
+    t.string 'transaction_loggable_type'
+    t.integer 'transaction_loggable_id'
+    t.string 'event'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
+  end
 end
 
 require 'state_machines-activerecord'
 require 'state_machines-audit_trail'
 require_relative 'dummy/models/movement'
 require_relative 'dummy/models/resource_state_transition'
+require_relative 'dummy/models/transaction_log_entry'
 require_relative 'dummy/models/animal'
 require_relative 'dummy/models/bicycle'
 require_relative 'dummy/models/car'
+require_relative 'dummy/models/scooter'
 require_relative 'dummy/models/user'
 require_relative 'dummy/lib/test_aasm'
 require_relative 'dummy/lib/test_state_machines'
