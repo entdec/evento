@@ -26,6 +26,10 @@ module Evento
                .each do |event_name|
         target_klass.send(:define_method, event_name, &block)
       end
+
+      %i[create destroy update save].each do |event_name|
+        target_klass.send(:define_method, event_name, &block)
+      end if options[:life_cycle]
     end
 
     def override_devise_notification(&block)

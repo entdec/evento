@@ -34,6 +34,41 @@ class OrchestratorTest < Minitest::Test
     assert_equal 'I do not care for the comment Bye!, Goodbye!', test_handler.stop('Bye!')
   end
 
+  def test_define_event_methods_from_life_cycle_on_test_event_handler
+    test_klass = Class.new
+
+    orchestrator = Evento::Orchestrator.new(Car)
+    orchestrator.define_event_methods_on(test_klass, life_cycle: true) do |comment|
+      "The comment is #{comment}"
+    end
+
+    test_handler = test_klass.new
+    assert_equal %i[create update save destroy].sort, test_handler.public_methods(false).sort
+    assert_equal 'The comment is Hello', test_handler.create('Hello')
+    assert_equal 'The comment is Faster', test_handler.destroy('Faster')
+    assert_equal 'The comment is Faster', test_handler.update('Faster')
+    assert_equal 'The comment is Faster', test_handler.save('Faster')
+  end
+
+  def test_define_event_methods_from_state_machine_and_life_cycle_on_test_event_handler
+    test_klass = Class.new do
+      def stop(comment)
+        "I do not care for the comment #{comment}, Goodbye!"
+      end
+    end
+
+    orchestrator = Evento::Orchestrator.new(Car)
+    orchestrator.define_event_methods_on(test_klass, state_machine: true, life_cycle: true) do |comment|
+      "The comment is #{comment}"
+    end
+
+    test_handler = test_klass.new
+    assert_equal %i[drive start stop create destroy update save].sort, test_handler.public_methods(false).sort
+    assert_equal 'The comment is Hello', test_handler.start('Hello')
+    assert_equal 'The comment is Faster', test_handler.drive('Faster')
+    assert_equal 'I do not care for the comment Bye!, Goodbye!', test_handler.stop('Bye!')
+  end
+
   def test_after_audit_trail_commit
     orchestrator = Evento::Orchestrator.new(Car)
     orchestrator.after_audit_trail_commit(:transitions) do |resource_state_transition|
