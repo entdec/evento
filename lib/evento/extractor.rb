@@ -11,7 +11,7 @@ module Evento
     def extract_transaction_log_association
       reflection = extract_association_reflection(klass, :transaction_log_entries)
 
-      return reflection&.klass
+      reflection&.klass
     end
 
     def extract_audit_trail_association(options = {})
@@ -19,7 +19,8 @@ module Evento
       reflection = extract_association_reflection(klass, name)
 
       return reflection if options[:reflection]
-      return reflection&.klass
+
+      reflection&.klass
     end
 
     def extract_events(options = {})

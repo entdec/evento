@@ -8,4 +8,3 @@ end
 
 require 'evento/extractor'
 require 'evento/orchestrator'
-

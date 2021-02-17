@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def send_devise_notification(notification, *devise_params)
+  def send_devise_notification(notification, *_devise_params)
     "Send the #{notification} notification"
   end
 end

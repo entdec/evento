@@ -5,14 +5,14 @@ require 'test_helper'
 class OrchestratorTest < Minitest::Test
   def test_override_devise_notification
     user = User.new
-    assert_equal "Send the email_changed notification", user.send_devise_notification('email_changed')
+    assert_equal 'Send the email_changed notification', user.send_devise_notification('email_changed')
 
     orchestrator = Evento::Orchestrator.new(User)
-    orchestrator.override_devise_notification do |notification, *devise_params|
-      "Beep Beep!"
+    orchestrator.override_devise_notification do |_notification, *_devise_params|
+      'Beep Beep!'
     end
 
-    assert_equal "Beep Beep!", user.send_devise_notification('email_changed')
+    assert_equal 'Beep Beep!', user.send_devise_notification('email_changed')
   end
 
   def test_define_event_methods_from_state_machine_on_test_event_handler
@@ -142,5 +142,4 @@ class OrchestratorTest < Minitest::Test
     scooter.start!
     assert_equal({ started: 2, driven: 1, stopped: 1 }, scooter.stats)
   end
-
 end

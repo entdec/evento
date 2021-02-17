@@ -15,22 +15,22 @@ class ExtractorAasmTest < Minitest::Test
 
   def test_with_devise_option_extracts_devise_events_from_test_aasm
     extractor = Evento::Extractor.new(TestAASM)
-    assert_equal ['confirmation_instructions',
-                  'email_changed',
-                  'password_change',
-                  'reset_password_instructions',
-                  'unlock_instructions'], extractor.extract_events(devise: true)
+    assert_equal %w[confirmation_instructions
+                    email_changed
+                    password_change
+                    reset_password_instructions
+                    unlock_instructions], extractor.extract_events(devise: true)
   end
 
   def test_with_both_options_extracts_devise_and_aasm_events_from_test_aasm
     extractor = Evento::Extractor.new(TestAASM)
-    assert_equal ['confirmation_instructions',
-                  'email_changed',
-                  'password_change',
-                  'reset_password_instructions',
-                  'run',
-                  'stop',
-                  'unlock_instructions',
-                  'walk'], extractor.extract_events(devise: true, state_machine: true)
+    assert_equal %w[confirmation_instructions
+                    email_changed
+                    password_change
+                    reset_password_instructions
+                    run
+                    stop
+                    unlock_instructions
+                    walk], extractor.extract_events(devise: true, state_machine: true)
   end
 end

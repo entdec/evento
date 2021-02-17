@@ -27,9 +27,11 @@ module Evento
         target_klass.send(:define_method, event_name, &block)
       end
 
+      return unless options[:life_cycle]
+
       %i[create destroy update save].each do |event_name|
         target_klass.send(:define_method, event_name, &block)
-      end if options[:life_cycle]
+      end
     end
 
     def override_devise_notification(&block)
@@ -41,7 +43,8 @@ module Evento
     def after_association_commit(association, name, &block)
       return unless association
 
-      tracker = "#{association.name.underscore.gsub('/', '__')}_after_commit_#{name.to_s.underscore.gsub('/', '__')}".upcase
+      tracker = "#{association.name.underscore.gsub('/',
+                                                    '__')}_after_commit_#{name.to_s.underscore.gsub('/', '__')}".upcase
       return if self.class.const_defined?(tracker, false)
 
       association.after_commit(&block)
