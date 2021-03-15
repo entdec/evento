@@ -30,11 +30,12 @@ module Evento
       return unless options[:life_cycle]
 
       %i[create destroy update save].each do |event_name|
-        target_klass.send(:define_method, event_name, &block)
+        target_klass.send(:define_method, event_name, &block) unless target_klass.method_defined?(event_name)
       end
     end
 
     def override_devise_notification(&block)
+      # As this is an override, ignore checking if it exists
       klass.define_method(:send_devise_notification, block)
     end
 
