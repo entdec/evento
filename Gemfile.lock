@@ -1,7 +1,14 @@
+GIT
+  remote: git@code.entropydecelerator.com:components/auxilium.git
+  revision: 90a6531ca2ebdf62df3921b6ec3b0bba07b38989
+  specs:
+    auxilium (0.2.0)
+      activesupport (> 5.1)
+
 PATH
   remote: .
   specs:
-    evento (0.1.4)
+    evento (0.1.6)
 
 GEM
   remote: https://rubygems.org/
@@ -65,6 +72,7 @@ PLATFORMS
 DEPENDENCIES
   aasm (~> 5.0)
   activerecord (~> 5.2)
+  auxilium (~> 0.2)!
   evento!
   i18n (~> 1.8)
   minitest (~> 5.0)
